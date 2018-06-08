@@ -2,7 +2,7 @@
 	
 	class App{
 
-		protected $controller = 'home';
+		protected $controller = 'HomeController';
 		protected $method = 'index';
 		protected $params = [];
 
@@ -29,7 +29,7 @@
 			 $this->params = $url ? array_values($url) : [];
 
 			 // note: dapat naay index tanan
-			 call_user_func_array([$this->controller, $this->method], $this->params);
+			 call_user_func_array([$this->controller, $this->method], array($this->params));
 
 		}
 

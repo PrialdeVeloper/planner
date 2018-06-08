@@ -9,6 +9,7 @@ body{
 	min-height:35rem;
 	position:relative;
 	font-family:'Source Sans Pro';font-weight:300
+
 	}
 .overlay{
 	position:absolute;
@@ -26,7 +27,7 @@ body{
 		}
 	}
 .masthead{
-	position:relative;
+	/*position:relative;*/
 	overflow:hidden;
 	padding-bottom:3rem;
 	}
@@ -68,12 +69,12 @@ body{
 .masthead{
 	height:100%;
 	min-height:0;
-	width:40.5rem;
+	width:45.5rem;
 	padding-bottom:0;
 	}
 .masthead .masthead-bg{
 	min-height:0;
-	transform:skewX(-8deg);
+	transform:skewX(-6deg);
 	transform-origin:top right
 	}
 .masthead .masthead-content{
@@ -158,7 +159,7 @@ body{
 .btnlog{
   float: right;
   background-color:transparent;
-  border-color:#cd9557;
+  border: 1px solid !important;
   width:8%;
   font-size:16pt;
   color:white;
@@ -173,3 +174,17 @@ body{
  color:black;
 }
 
+.try:not(:hover){
+	-webkit-filter: grayscale(100);
+    filter: grayscale(1);
+    -webkit-transition: .25s ease-in;
+    transition: .25s ease-in;
+}
+
+.centerPos{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

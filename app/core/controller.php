@@ -3,8 +3,9 @@
 		
 		public function model($model){
 			if(file_exists(dirname(__DIR__). DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $model . '.php')){
-			require_once dirname(__DIR__). DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $model . '.php';
-			return new $model();
+			require dirname(__DIR__). DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $model . '.php';
+			return new model();
+			
 			}
 			else{
 				return false;
@@ -12,7 +13,7 @@
 		}
 
 
-		public function view($view, $data = []){
+		public function view($view){
 			if(file_exists(dirname(__DIR__). DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $view . '.php')){
 			require_once dirname(__DIR__). DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $view . '.php';
 			return true;
