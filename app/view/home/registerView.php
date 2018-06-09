@@ -1,9 +1,15 @@
+<?php
+print_r($errors);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>Users Registration</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Simple Planner">
+    <meta name="author" content="Syrel Prialde">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="../../public/vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
@@ -27,7 +33,7 @@
 			<div class="alert alert-warning alert-dismissible fade show w-75 text-center" id="warning">
 		  	</div>
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-52 p-b-25">
-				<form class="login100-form validate-form" method="POST" id="regForm">
+				<form class="login100-form validate-form" method="GET" id="regForm" enctype="multipart/form-data">
 					<fieldset class="field">
 						<label class="login100-form-title p-b-35 lead">
 							<i>Registration</i>
@@ -56,7 +62,7 @@
 
 						<!-- email -->
 						<div class="wrap-input100 validate-input m-b-16" data-validate = "Please Input valid Email format (example: yourname@email.com)">
-							<input class="input100" type="text" name="input[3]" placeholder="Email">
+							<input class="input100" type="email" name="input[3]" placeholder="Email">
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<span class="lnr lnr-envelope"></span>
@@ -128,28 +134,38 @@
 						</div>
 					</fieldset>
 					<fieldset>
-						<div class="container">
-							<div class="row">
-								<div class="container-login100-form-btn p-t-10">
-									<button class="login100-form-btn previous w-50" type="button">
-										Previous
-									</button>
-									<button class="login100-form-btn next w-50" id="submitButtonRegister" type="button" name="submitRegister">
-										Submit
-									</button>
-								</div>
-							</div>
-						</div>
 						<div class="container-fluid">
 							<div class="row" id="first">
-								<div id="dragandrophandler">
-									Drag Files Here
-								</div>
-							</div>
-							<div class="row">
-								<div id="status1"></div>
+								<div class="form-group">
+									<div class="container text-center p-b-35">
+										<span class="lead">Choose Your Profile Picture</span>
+									</div>
+								    <input type="file" name="input[7]" class="file" accept="image/*" id="imageInput">
+								    <div class="input-group col-xs-12">
+								      <span class="input-group-addon"><span class="lnr lnr-picture"></span></span></span>
+								      <input type="text" class="form-control input-lg" disabled placeholder="Upload Image">
+								      <span class="input-group-btn">
+								        <button class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+								      </span>
+								    </div>
+								    <div>
+								    	<img src="../../public/userImages/default.jpg" id="previewImage">
+									</div>
+  								</div>
 							</div>
 						</div>
+							<div class="container" id="buttonSecond">
+								<div class="row">
+									<div class="container-login100-form-btn p-t-10">
+										<button class="login100-form-btn previous w-50" type="button">
+											Previous
+										</button>
+										<button class="login100-form-btn w-50" id="submitButtonRegister" type="Submit" name="submitRegister">
+											Submit
+										</button>
+									</div>
+								</div>
+							</div>
 					</fieldset>
 				</form>
 			</div>

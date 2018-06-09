@@ -4,7 +4,7 @@
 
 		protected $db;
 		protected $dbname = 'planner';
-		protected $qmark = array();
+		protected $qmark;
 		public function __construct(){
 			$this->db = new PDO("mysql: host=localhost; dbname=$this->dbname",'root','');
 			$this->qmark = null;
