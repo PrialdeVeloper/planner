@@ -70,35 +70,119 @@
         });
     });
 
+    // $(function(){
+    //     $("#submitButtonRegister").bind({
+    //         click: function(event){
+    //             if($("#id").val() != $("#id2").val()){
+    //                 event.preventDefault();
+    //                 $("#warning").html("<strong>Warning!</strong> Password needs to be the same as you retype it!")
+    //                 $("#warning").show();
+    //             }
+    //             else{
+    //                 $("#warning").unbind('click').click();
+    //                 $("#warning").hide();
+    //             }
+    //         }
+    //     });
+    // });
+
+
     $(function(){
-        $("#submitButtonRegister").bind({
+        $( "button[type=submit]" ).bind({
             click: function(event){
-                if($("#id").val() != $("#id2").val()){
+                var count = 0;
+                alert('again');
+                $( "input" ).each(function( index ) {
+                    if(($("#id").val() != $("#id2").val()) && ($("#id").val() != "" || $("#id2").val() != "")){
+                        $("#warning").html("<strong>Warning!</strong> Password needs to be the same as you retype it! Please go back and fix it");
+                        $("#warning").show();
+                        count = 1;
+                    }
+                    var nameInput = $(".fname").val();
+                    if($(".fname").val() == "" || nameInput.match(/[^a-zA-Z\D\s:]/)){
+                        $("#warning").hide();
+                        $("#warning").html("<strong>Warning!</strong> Please click previous and make sure your name has no unneccessary characters! ");
+                        $("#warning").show();
+                        count = 1;
+                    }
+                    if($("#date").val() == "" || isNaN(Date.parse($("#date").val()))){
+                        $("#warning").hide();
+                        $("#warning").html("<strong>Warning!</strong> Please click previous and check if date is in Date format ");
+                        $("#warning").show();
+                        count = 1;
+                    }
+                    var emailInput = $("input[placeholder=Email]").val();
+                    if($("input[placeholder=Email]").val() == "" || emailInput.match(/^((?!@).)*$/)){
+                        $("#warning").hide();
+                        $("#warning").html("<strong>Warning!</strong> Please click previous and input email on proper format!(e.g yourname@youremail.com)");
+                        $("#warning").show();
+                        count = 1;
+                    }
+                    if($("#imageInput").get(0).files.length === 0){
+                        $("#warning").hide();
+                        $("#warning").html("<strong>Warning!</strong> Please choose an image as your profile picture! ");
+                        $("#warning").show();
+                        count = 1;
+                    }
+                    var file = $("#imageInput")[0].files[0];
+                    var typeCheck = file.type;
+                    var ValidImageTypes = ["image/jpeg", "image/png"];
+                    if ($.inArray(typeCheck, ValidImageTypes) < 0) {
+                        $("#warning").hide();
+                        $("#warning").html("<strong>Warning!</strong> Please choose real image for your profile! ");
+                        $("#warning").show();
+                        count = 1;
+                    }
+                    var file = $("#imageInput")[0].files[0];
+                    var imageSize = file.size;
+                    if (imageSize >  5000000) {
+                        $("#warning").hide();
+                        $("#warning").html("<strong>Warning!</strong> Please choose an image which is less than 5mb!");
+                        $("#warning").show();
+                        count = 1;
+                    }
+
+                    switch($(".select").val()){
+                        case 'male':
+                            break;
+                        case 'female':
+                            break;
+                        case 'others':
+                            break;
+                        case 'not':
+                            break;
+                        default:
+                            $("#warning").hide();
+                            $("#warning").html("<strong>Warning!</strong> Please select only from gender choices!");
+                            $("#warning").show();
+                            count = 1;
+                    }
+                });
+                if(count > 0 ){
                     event.preventDefault();
-                    $("#warning").html("<strong>Warning!</strong> Password needs to be the same as you retype it!")
-                    $("#warning").show();
                 }
-                else{
-                    $("#warning").unbind('click').click();
+                else
+                    if(count = 0){
                     $("#warning").hide();
+                    $("#regForm").unbind('submit').submit();
                 }
             }
         });
     });
+                    
 
-
-    $(function(){
-        $(".check").keypress(function(){
-            if($(this).val().match(/[^a-zA-Z\D\s:]/)){
-                $("#warning").html("<strong>Warning!</strong> Name cannot have non-word characters!");
-                $("#warning").show();
-            }
-            else
-            {
-                $("#warning").hide();
-            }
-        });
-    });
+    // $(function(){
+    //     $(".check").keypress(function(){
+    //         if($(this).val().match(/[^a-zA-Z\D\s:]/)){
+    //             $("#warning").html("<strong>Warning!</strong> Name cannot have non-word characters!");
+    //             $("#warning").show();
+    //         }
+    //         else
+    //         {
+    //             $("#warning").hide();
+    //         }
+    //     });
+    // });
 
     $(document).on('click', '.browse', function(){
             var file = $(this).parent().parent().parent().find('.file');

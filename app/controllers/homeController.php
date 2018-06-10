@@ -1,9 +1,9 @@
 <?php 
 	class HomeController extends Controller{
 
-		// trap
+		// others
 		public function checkEscapeString($variable){
-			return htmlentities($variable);
+			return htmlentities(trim($variable));
 		}
 
 		public function arrayCount($variable,$count){
@@ -18,37 +18,50 @@
 			}
 			return ($flag == true && $arrayVar == null)? true : $arrayVar;
 		}
-		// end of trap
+
+		public function uploadImageToServer($directory,$imageFile){
+			if(isset($imageFile)){
+				$randomFileName = time() . strtotime("now") . rand(1,6);
+				$dir = "../../userImages/".$directory."/";
+				$file = $directory . basename($_FILES[$imageFile]["name"]);
+				$fileExtension = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+					if ($_FILES["file"]["error"] < 0) {
+						if(!file_exists($randomFileName.$fileExtension)){
+							try {
+								move_uploaded_file($_FILES[$imageFile]["tmp_name"], $dir."/".$randomFileName);
+								return true;
+							} catch (Exception $e) {
+								return $e->getMessage();
+							}
+							
+						}
+					}
+					else{
+						return $_FILES["file"]["error"];
+					}
+			}
+		}
+		// end of others
 
 
 		public function index(){
-			$qwe = 'qwe';
 			$view = $this->view('home/indexView');
-			require "traps.php";
-		}
+		}		
 
-		public function showError($destination, $errorMessage){
-			// call_user_func_array($this->view, 'home/registerViewarray',array('$errorMessage'));
-			$this->view($destination,$errorMessage);
-		}
-
-		
-
-		public function register($array){
+		public function register(){
 			$controller = new Controller();
 			$count = 1;
 			$notSet = null;
 			$set = null;
 			$view = $this->view('home/registerView');
-			
-			// var_dump(is_array($this->arrayCount($_GET['input'],7)));
 			$salt = [
 					'cost' => 9
 					];
 
-			if(isset($_GET['submitRegister'])){
-				if(!is_array($this->arrayCount($_GET['input'],7))){
-					foreach ($_GET['input'] as $fields) {
+			if(isset($_POST['submitRegister'])){
+				$this->uploadImageToServer('profile',$_POST['input[7]']);
+				if(!is_array($this->arrayCount($_POST['input'],7))){
+					foreach ($_POST['input'] as $fields) {
 						if(empty($fields))
 							{
 								$notSet[] = $count;
@@ -61,22 +74,14 @@
 					}
 					$set[2] = $this->checkEscapeString($set[2]);
 					$set[3] = password_hash($this->checkEscapeString($set[3]),PASSWORD_BCRYPT, $salt);
+						if(empty($notSet)){
+							
+						}
 				}
-				elseif(is_array($this->arrayCount($_GET['input'],7))) {
-					$this->view('home/registerView',['name'=>'qwe']);
+				elseif(is_array($this->arrayCount($_POST['input'],7))) {
+					return $this->arrayCount($_POST['input'],7);
 				}
-
-			
-			// if(!empty($notSet)){
-			// 	$view = $this->view('home/registerView',$notSet);
-			// }
-
-			// elseif(empty($notSet)){
-			// $model = $this->model('home/registerModel')->register('user',$set,array('userFullname','userTitle','email','password','gender','birthdate'));
-			// }
-
 			}
-
 		}
 	}
 ?>

@@ -1,5 +1,6 @@
 <?php
-print_r($errors);
+$qwe1 = new HomeController;
+print_r($qwe1::register());
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ print_r($errors);
 			<div class="alert alert-warning alert-dismissible fade show w-75 text-center" id="warning">
 		  	</div>
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-52 p-b-25">
-				<form class="login100-form validate-form" method="GET" id="regForm" enctype="multipart/form-data">
+				<form class="login100-form validate-form" method="POST" id="regForm" enctype="multipart/form-data">
 					<fieldset class="field">
 						<label class="login100-form-title p-b-35 lead">
 							<i>Registration</i>
@@ -41,7 +42,7 @@ print_r($errors);
 
 						<!-- name -->
 						<div class="wrap-input100 validate-input m-b-16" data-validate = "Please input name in proper format">
-							<input class="input100 check" type="text" name="input[1]" placeholder="Fullname">
+							<input class="input100 fname" type="text" name="input[1]" placeholder="Fullname">
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<span class="lnr lnr-user"></span>
@@ -62,7 +63,7 @@ print_r($errors);
 
 						<!-- email -->
 						<div class="wrap-input100 validate-input m-b-16" data-validate = "Please Input valid Email format (example: yourname@email.com)">
-							<input class="input100" type="email" name="input[3]" placeholder="Email">
+							<input class="input100 check" type="email" name="input[3]" placeholder="Email">
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<span class="lnr lnr-envelope"></span>
@@ -93,7 +94,7 @@ print_r($errors);
 
 						<!-- gender -->
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Password Do not match with first password">
-					    <select class="input100 form-control" name="input[5]">
+					    <select class="input100 form-control select" name="input[5]">
 					      <option value="male">Male</option>
 					      <option value="female">Female</option>
 					      <option value="others">Others</option>
@@ -149,7 +150,7 @@ print_r($errors);
 								      </span>
 								    </div>
 								    <div>
-								    	<img src="../../public/userImages/default.jpg" id="previewImage">
+								    	<img src="../../app/userImages/default.jpg" id="previewImage">
 									</div>
   								</div>
 							</div>

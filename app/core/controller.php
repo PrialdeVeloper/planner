@@ -14,9 +14,6 @@
 
 
 		public function view($view,$errors = []){
-
-		print_r($errors); 
-
 			if(file_exists(dirname(__DIR__). DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $view . '.php')){
 			require_once dirname(__DIR__). DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . $view . '.php';
 			return true;
