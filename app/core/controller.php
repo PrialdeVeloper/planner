@@ -3,7 +3,7 @@
 		
 		public function model($model){
 			if(file_exists(dirname(__DIR__). DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $model . '.php')){
-			require dirname(__DIR__). DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $model . '.php';
+			require_once dirname(__DIR__). DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . $model . '.php';
 			return new model();
 			
 			}

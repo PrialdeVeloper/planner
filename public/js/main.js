@@ -91,9 +91,8 @@
         $( "button[type=submit]" ).bind({
             click: function(event){
                 var count = 0;
-                alert('again');
                 $( "input" ).each(function( index ) {
-                    if(($("#id").val() != $("#id2").val()) && ($("#id").val() != "" || $("#id2").val() != "")){
+                    if(($("#id").val() != $("#id2").val()) || ($("#id").val() == "" || $("#id2").val() == "")){
                         $("#warning").html("<strong>Warning!</strong> Password needs to be the same as you retype it! Please go back and fix it");
                         $("#warning").show();
                         count = 1;

@@ -141,7 +141,7 @@ print_r($qwe1::register());
 									<div class="container text-center p-b-35">
 										<span class="lead">Choose Your Profile Picture</span>
 									</div>
-								    <input type="file" name="input[7]" class="file" accept="image/*" id="imageInput">
+								    <input type="file" name="registerImage" class="file" accept="image/*" id="imageInput">
 								    <div class="input-group col-xs-12">
 								      <span class="input-group-addon"><span class="lnr lnr-picture"></span></span></span>
 								      <input type="text" class="form-control input-lg" disabled placeholder="Upload Image">
