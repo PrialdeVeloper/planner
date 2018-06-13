@@ -1,8 +1,3 @@
-<?php
-$qwe1 = new HomeController;
-print_r($qwe1::register());
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,7 +124,7 @@ print_r($qwe1::register());
 								Already have an account?
 							</span>
 
-							<a class="txt1 hov1 text-primary" href="#">
+							<a class="txt1 hov1 text-primary" href="login">
 								Login now			
 							</a>
 						</div>
@@ -172,8 +167,6 @@ print_r($qwe1::register());
 			</div>
 		</div>
 	</div>
-	
-	
 
 	
 <!--===============================================================================================-->	

@@ -705,3 +705,7 @@ label.login100-form-title{
     padding-right: 15px;
   }
 }
+
+#loginWarning{
+	display: none;
+}

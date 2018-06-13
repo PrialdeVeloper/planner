@@ -1,0 +1,81 @@
+/*dashboard*/
+.profile{
+	width: 160px;
+	height: 160px;
+	border: 1px solid #576275;
+	border-radius: 50%;
+}
+#name{
+ font-size: 28px;
+ font-weight: 300;
+ margin: 20px 0 10px 0;
+}
+
+div.font-awesome-font{
+	line-height: 45px;
+	text-align: center;
+	font-size: 22px;
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+.activeBar{
+	background: #363636;
+}
+
+.bg{
+	border-top: 1px solid #3d3d3d;
+	border-bottom: 1px solid #252525;
+}
+
+.text-header-side{
+ padding-left: 5%;
+ margin-left: 25px;
+ -webkit-box-shadow: -3px 0 5px -4px #000;
+ box-shadow: -3px 0 5px -4px #000;
+}
+
+.font-awesome-font{
+	color:#03CC85;
+}
+
+.sub{
+ font-size: 18px;
+ font-weight: 300;
+ color: #a5a2a2;
+ margin: 0px 0 10px 0;
+}
+
+.myBG{
+	background-color: #2B2B2B!important;
+}
+
+#sidebar{
+	text-align: left;
+	vertical-align: top;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	width: 250px;
+	background: #2b2b2b;
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;
+	bottom: 45px;
+	overflow: hidden;
+}
+
+#content{
+	position: absolute;
+	left: 300px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: #fefefe;
+	overflow: auto;
+}
+/*end of dashboard*/

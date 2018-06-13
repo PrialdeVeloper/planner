@@ -1,6 +1,8 @@
 <?php 
 	class HomeController extends Controller{
 
+		protected $userTable = array('userFullname','userTitle','email','password','gender','birthdate');
+
 		public function __construct(){
 			
 		}
@@ -68,15 +70,59 @@
 					$set[2] = $this->checkEscapeString($set[2]);
 					$set[3] = password_hash($this->checkEscapeString($set[3]),PASSWORD_BCRYPT, $salt);
 						if(empty($notSet)){
-							$returnModel = $model ->register('user',$set,array('userFullname','userTitle','email','password','gender','birthdate'));
+							$returnModel = $model ->register('user',$set,$this->userTable);
 							$imgReturn = $this->imageUpload('profile','registerImage',$returnModel);
 							$model->updateOneField('user','profile','userID',$imgReturn,$returnModel);
 						}
+						return true;
 				}
 				elseif(is_array($this->arrayCount($_POST['input'],6))) {
 					return $this->arrayCount($_POST['input'],6);
 				}
 			}
+		}
+
+		public function login(){
+			$errors = [];
+			$email = null;
+			$password = null;
+			if(isset($_POST['submitRegister'])){
+				if(empty($_POST['email']) || empty($_POST['password'])){
+					$loginWarning = "Please fill in both fields to continue";
+					$errors[] = $loginWarning;
+				}
+				else{
+					$email = $_POST['email'];
+					$password = $_POST['password'];
+				}
+			}
+			$this->view('home/loginView',$errors);
+		}
+
+
+		public function dashboard(){
+			$this->view('dashboard/dashboardHeader');
+			$this->view('dashboard/dashboardNewsfeed');
+			$this->view('dashboard/dashboardFooter',array("activeBar"=>"newsFeed"));
+		}
+		public function me(){
+			$this->view('dashboard/dashboardHeader');
+			$this->view('dashboard/dashboardMe');
+			$this->view('dashboard/dashboardFooter',array("activeBar"=>"aboutMe"));
+		}
+		public function skills(){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			$data = $model->getAllData('skills',1);
+			print_r($data);
+			$this->view('dashboard/dashboardHeader');
+			$this->view('dashboard/dashboardSkills',['name'=>'name']);
+			$this->view('dashboard/dashboardFooter',array("activeBar"=>"skills"));
+		}
+		public function achievements(){
+			$this->view('dashboard/dashboardHeader');
+			$this->view('dashboard/dashboardAchievement');
+			$this->view('dashboard/dashboardFooter',array("activeBar"=>"achievements"));
 		}
 	}
 ?>

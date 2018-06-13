@@ -27,11 +27,32 @@
 			$fieldsClean = implode(',',$fields);
 			try {
 				$stmt = $this->db->prepare("INSERT INTO $table($fieldsClean) VALUES ($dataClean)");
-				$return = $stmt->execute($data);
+				$stmt->execute($data);
 				return $this->db->lastInsertId();
 			} catch (Exception $e) {
 				return $e->getMessage();
 			}
+		}
+
+		public function login($inputOne,$inputTwo){
+			try {
+				
+			} catch (Exception $e) {
+				
+			}
+		}
+
+
+		public function getAllData($table,$whereClause){
+			try {
+				$stmt = $this->db->prepare("SELECT * FROM $table WHERE userID = ?");
+				$stmt->execute(array($whereClause));
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			} catch (Exception $e) {
+				return $e->getMessage();
+			}
+			
 		}
 
 	}

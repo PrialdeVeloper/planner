@@ -168,20 +168,6 @@
             }
         });
     });
-                    
-
-    // $(function(){
-    //     $(".check").keypress(function(){
-    //         if($(this).val().match(/[^a-zA-Z\D\s:]/)){
-    //             $("#warning").html("<strong>Warning!</strong> Name cannot have non-word characters!");
-    //             $("#warning").show();
-    //         }
-    //         else
-    //         {
-    //             $("#warning").hide();
-    //         }
-    //     });
-    // });
 
     $(document).on('click', '.browse', function(){
             var file = $(this).parent().parent().parent().find('.file');
