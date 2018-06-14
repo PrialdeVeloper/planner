@@ -26,8 +26,8 @@ if(isset($errors) && !empty($errors)){
                 </div>
                 <div class="col text-center">
                     <div class="text-white">
-                        <h2 id="name"><?php echo $userFullname; ?></h2>
-                        <h3 class="sub"><i><?php echo $userTitle; ?></i></h3>
+                        <h2 id="name"><?php echo ucwords($userFullname); ?></h2>
+                        <h3 class="sub"><i><?php echo ucwords($userTitle); ?></i></h3>
                     </div>
                 </div>
                 <div class="col bg mt-5 text-white" id="newsFeed">

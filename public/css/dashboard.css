@@ -41,6 +41,11 @@ div.font-awesome-font{
 	color:#03CC85;
 }
 
+.indicator{
+	background-color: #03CC85!important;
+	line-height: 40px;
+}
+
 .sub{
  font-size: 18px;
  font-weight: 300;
@@ -71,11 +76,11 @@ div.font-awesome-font{
 
 #content{
 	position: absolute;
-	left: 250px;
+	left: 300px;
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: #F9F9F9;
+	background: #FFF;
 	overflow: auto;
 }
 
@@ -87,17 +92,51 @@ div.font-awesome-font{
 	color: #FF4F00;
 }
 
-.beforeImage{
+.beforeImage::after{
 	padding: 30px;
-	border: 1px solid red;
+	
 }
 
 
 #personalInfo div.row div.col-6 img{
 	height: 500px;
 	width: 450px;
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.myBorder{
+	border-left: 4px solid #edeaea  !important;
+	border-top-left-radius: .25rem !important;
+	border-bottom-left-radius: .25rem !important;
+}
+
+.shadowBox{
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+#title{
+	font-size: 3em;
+}
+
+div.col-6 div.container-fluid div.col-lg{
+	font-weight: 600;
+	font-size: 30px;
+	padding:0;
+}
+
+#subtitle{
+	color: #808080;;
+	font-weight: 600;
+	font-size: 17px;
+}
+
+div.borderHere{
+	margin-top: 10px;
+	border: 2px solid #FF4F00;
+	border-radius: .25rem;
+}
 
 
 /*end of dashboard*/
