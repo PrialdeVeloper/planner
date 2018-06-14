@@ -34,9 +34,12 @@
 			}
 		}
 
-		public function login($inputOne,$inputTwo){
+		public function SelectOne($table,$field,$data,$whereClause){
 			try {
-				
+				$stmt = $this->db->prepare("SELECT $field FROM $table WHERE $whereClause = ?");
+				$stmt->execute(array($data));
+				$return = $stmt->fetchColumn();
+				return $return;
 			} catch (Exception $e) {
 				
 			}
@@ -53,6 +56,10 @@
 				return $e->getMessage();
 			}
 			
+		}
+
+		public function lastID(){
+			return $this->db->lastInsertId();
 		}
 
 	}

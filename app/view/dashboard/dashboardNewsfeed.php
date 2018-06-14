@@ -1,7 +1,7 @@
 
         <div id="content">
             <div class="container border">
-          qwe      
+        <?php print_r($errors); ?> 
             </div>
         </div>
     </div>

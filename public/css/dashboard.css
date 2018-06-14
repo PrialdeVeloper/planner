@@ -71,11 +71,33 @@ div.font-awesome-font{
 
 #content{
 	position: absolute;
-	left: 300px;
+	left: 250px;
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: #fefefe;
+	background: #F9F9F9;
 	overflow: auto;
 }
+
+.bg-orange{
+	background-color: #FF4F00;
+}
+
+.text-orange{
+	color: #FF4F00;
+}
+
+.beforeImage{
+	padding: 30px;
+	border: 1px solid red;
+}
+
+
+#personalInfo div.row div.col-6 img{
+	height: 500px;
+	width: 450px;
+}
+
+
+
 /*end of dashboard*/

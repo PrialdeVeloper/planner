@@ -1,4 +1,8 @@
-<?php extract($errors);?>
+<?php 
+if(isset($errors) && !empty($errors)){
+	extract($errors[0]); 	
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,9 +31,18 @@
 <body background="../../public/files/images/Project-Planning-and-Management.jpeg">
 	<div class="limiter">
 		<div class="container-login100">
-			<div class="alert alert-warning alert-dismissible fade show w-75 text-center" id="loginWarning" style="display: <?php if(!empty($loginWarning)){ echo 'block'; }else{echo 'none';}?>">
+			<div class="alert alert-warning alert-dismissible fade show w-75 text-center" id="loginWarning" style="display: <?php if(!empty($loginWarning) || !empty($invalidCredential)){ echo 'block'; }else{echo 'none';}?>">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<?php if(isset($loginWarning) && !empty($loginWarning)){
+					echo "<b>Warning! </b>" . $loginWarning;
+					}
+					else{
+						if(isset($invalidCredential) && !empty($invalidCredential)){
+							echo "<b>Warning! </b>" . $invalidCredential;
+						}
+					} ?>
 		  	</div>
-			<div class="wrap-login100 p-l-50 p-r-50 p-t-52 p-b-25">
+			<div class="wrap-login100 p-l-50 p-r-50 p-t-45 p-b-25">
 				<form class="login100-form validate-form" method="POST" id="regForm">
 						<label class="login100-form-title p-b-35 lead">
 							<i>Login</i>
@@ -63,6 +76,15 @@
 									</button>
 								</div>
 							</div>
+						</div>
+						<div class="text-center w-full pt-3">
+							<span class="txt1">
+								Don't have account yet?
+							</span>
+
+							<a class="txt1 hov1 text-primary" href="register">
+								Register Now!			
+							</a>
 						</div>
 				</form>
 			</div>

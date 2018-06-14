@@ -9,5 +9,10 @@ extract($errors);
     			$("#"+target).addClass('activeBar');
     		});
     	</script>
+    	<script type="text/javascript">
+    		$('#textlayer').fadeIn('slow', function () {
+   				$('#text').animate({'opacity': 'show', 'paddingTop': 0}, 2000);
+			});
+    	</script>
 </body>
 </html>

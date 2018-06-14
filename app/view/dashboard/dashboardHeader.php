@@ -1,3 +1,11 @@
+<?php 
+if(isset($errors) && !empty($errors)){
+    $errors[0][1] = null;
+    $errors[0]["userID"] = null;
+    $errors[0]["password"] = null;
+    extract($errors[0]);   
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,12 +22,12 @@
         <div id="sidebar">
             <div class="container-container pt-4">
                 <div class="col d-flex justify-content-center">
-                    <!-- fieldimg --><img class="img-fluid profile" src="../../app/userImages/profile/1528791193152879119341.jpg">
+                    <img class="img-fluid profile" src="../../app/userImages/profile/<?php echo $profile; ?>">
                 </div>
                 <div class="col text-center">
                     <div class="text-white">
-                        <h2 id="name">Marvee Franco</h2>
-                        <h3 class="sub"><i>Dr,qwe,qwe,qweqs</i></h3>
+                        <h2 id="name"><?php echo $userFullname; ?></h2>
+                        <h3 class="sub"><i><?php echo $userTitle; ?></i></h3>
                     </div>
                 </div>
                 <div class="col bg mt-5 text-white" id="newsFeed">
@@ -49,8 +57,16 @@
                 <div class="col bg text-white" id="achievements">
                     <div class="container-fluid pointer" onclick="window.location='achievements'">
                         <div class="row font-awesome-font">
-                            <div class="col-sm-1"><i class="fas fa-trophy"></i></i></div>
+                            <div class="col-sm-1"><i class="fas fa-trophy"></i></div>
                             <div class="col text-header-side text-white text-left">Achievements</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col bg text-white" id="signout">
+                    <div class="container-fluid pointer" onclick="window.location='signOut'">
+                        <div class="row font-awesome-font">
+                            <div class="col-sm-1"><i class="fas fa-sign-out-alt"></i></div>
+                            <div class="col text-header-side text-white text-left">Sign Out</div>
                         </div>
                     </div>
                 </div>
