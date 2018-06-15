@@ -10,6 +10,7 @@ if(isset($errors) && !empty($errors)){
 <html>
 <head>
 	<title>Dashboard</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 	<link href="../../public/css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	<link href="../../public/font/fontawesome/css/fontawesome-all.css" rel="stylesheet">
 	<link href="../../public/css/dashboard.css" rel="stylesheet">

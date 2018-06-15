@@ -1,7 +1,10 @@
 <?php 
 	class HomeController extends Controller{
 
-		protected $userTable = array('userFullname','userTitle','email','password','gender','birthdate');
+		protected $userTable = array('userFullname','userTitle','userEmail','password','gender','birthdate');
+		protected $userTableProfile = array('userFullname','userTitle','email','gender','birthdate','profile');
+		protected $skill = array('userID','skillName','skillRating','description');
+		protected $skillProfile = array('userID','skillName','skillRating','profile','description');
 		protected $salt = null;
 
 		public function __construct(){
@@ -129,10 +132,10 @@
 			$this->view('home/loginView',$errors);
 		}
 
-		public function getAllDataOnUser(){
+		public function getAllDataOnUser($table){
 			$controller = new Controller();
 			$model = $controller->Model('home/registerModel');
-			return $model->getAllData('user',$_SESSION['userID']);
+			return $model->getAllData($table,$_SESSION['userID']);
 		}
 
 
@@ -141,34 +144,60 @@
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
-			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser());
+			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
 			$this->view('dashboard/dashboardNewsfeed');
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"newsFeed"));
 		}
 		public function me(){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			$array = null;
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
-			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser());
-			$this->view('dashboard/dashboardMe',$this->getAllDataOnUser());
+			if(isset($_POST['saveChanges'])){
+				if($_FILES["imageUpload"]['size'] == 0) {
+					$image = $_POST['imageHere'];
+				}
+				else{
+				 	$image= $this->imageUpload('profile',$this->checkEscapeString("imageUpload"),$_SESSION['userID']);
+				}
+				$array = array($this->checkEscapeString($_POST['userFullname']),$this->checkEscapeString($_POST['userTitle']),$this->checkEscapeString($_POST['userEmail']),$this->checkEscapeString($_POST['userGender']),$this->checkEscapeString($_POST['userBirthday']),$image);
+				$model->updateAll("user",$this->userTableProfile,$array,"userID",$_SESSION['userID']);
+			}
+			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
+			$this->view('dashboard/dashboardMe',$this->getAllDataOnUser('user'));
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"aboutMe"));
 		}
 		public function skills(){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
-			$controller = new Controller();
-			$model = $controller->Model('home/registerModel');
+
+			if(isset($_POST["addSkill"])){
+				if($_FILES["imageUpload"]['size'] > 0) {
+					$image= $this->imageUpload('skill',$this->checkEscapeString("imageUpload"),$_SESSION['userID']);
+					$array = array($_SESSION['userID'],$this->checkEscapeString(ucwords($_POST['skillname'])),$this->checkEscapeString($_POST['star']),$this->checkEscapeString($_POST['description']));
+					$returnModel = $model->register('skills',$array,$this->skill);
+					$model->updateOneField('skills','profile','skillID',$image,$returnModel);
+				}
+				elseif($_FILES["imageUpload"]['size'] == 0) {
+					$arrayNoImage = array($_SESSION['userID'],$this->checkEscapeString(ucwords($_POST['skillname'])),$this->checkEscapeString($_POST['star']),"",$this->checkEscapeString($_POST['description']));
+					$model->register('skills',$arrayNoImage,$this->skillProfile);
+				}
+			}
 			$data = $model->getAllData('skills',1);
-			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser());
-			$this->view('dashboard/dashboardSkills');
+			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
+			$this->view('dashboard/dashboardSkills',$this->getAllDataOnUser('skills'));
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"skills"));
 		}
 		public function achievements(){
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
-			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser());
+			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
 			$this->view('dashboard/dashboardAchievement');
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"achievements"));
 		}

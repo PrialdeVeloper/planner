@@ -62,5 +62,16 @@
 			return $this->db->lastInsertId();
 		}
 
+		public function updateAll($table,$fields,$data,$whereClause,$whereClauseAnswer){
+			try {
+				$fieldsClean = null;
+				$fieldsClean = implode("=?,", $fields)."=?";
+				$stmt = $this->db->prepare("UPDATE $table SET $fieldsClean WHERE $whereClause = $whereClauseAnswer");
+				$stmt->execute($data);
+			} catch (Exception $e) {
+				return $e->getMessage();
+			}
+		}
+
 	}
 ?>
