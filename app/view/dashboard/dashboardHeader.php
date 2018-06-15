@@ -3,7 +3,7 @@ if(isset($errors) && !empty($errors)){
     $errors[0][1] = null;
     $errors[0]["userID"] = null;
     $errors[0]["password"] = null;
-    extract($errors[0]);   
+    extract($errors[0]);
 }
 ?>
 <!DOCTYPE html>

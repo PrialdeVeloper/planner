@@ -1,7 +1,7 @@
 <?php 
 	class HomeController extends Controller{
 
-		protected $userTable = array('userFullname','userTitle','userEmail','password','gender','birthdate');
+		protected $userTable = array('userFullname','userTitle','email','password','gender','birthdate');
 		protected $userTableProfile = array('userFullname','userTitle','email','gender','birthdate','profile');
 		protected $skill = array('userID','skillName','skillRating','description');
 		protected $skillProfile = array('userID','skillName','skillRating','profile','description');
@@ -16,6 +16,31 @@
 		// others
 		public function checkEscapeString($variable){
 			return htmlentities(trim($variable));
+		}
+
+		public function createSkiils(){
+			$builder = 1;
+			$skillData = $this->getAllDataOnUser('skills');
+			$star = null;
+				// $builder = '<div class="col-lg-8 mt-5 pl-5 contentSkills shadowBox">
+    //         <div class="row">
+    //             <div class="col-5">
+    //                 <img class="img-fluid images" src="../../app/userImages/skill/' .htmlentities($skill["profile"]) .'">
+    //             </div>
+    //             <div class="col-7 skillName lead">
+    //                 <div class="col">
+    //                     <span class="text-left mt-3">'. htmlentities($skill["skillName"]) .'</span>
+    //                 </div>
+    //                 <div class="col desc pb-5">
+    //                     <p class="text-left mt-3">'. htmlentities($skill["description"]) .'</p>
+    //                 </div>
+    //                 <div class="col text-center star mt-5">
+    //                     <label class="text-warning">qw</label>
+    //                 </div>
+    //             </div>
+    //     	</div>';
+			
+			
 		}
 
 		public function arrayCount($variable,$count){
@@ -86,8 +111,8 @@
 					$set[3] = $this->hashPassword($set[3]);
 						if(empty($notSet)){
 							$returnModel = $model ->register('user',$set,$this->userTable);
+							$_SESSION['userID']=$returnModel;
 							$imgReturn = $this->imageUpload('profile','registerImage',$returnModel);
-							$_SESSION['userID']=$model->lastID();
 							$model->updateOneField('user','profile','userID',$imgReturn,$returnModel);
 							echo "<script>window.location = 'dashboard';</script>";
 						}
@@ -190,7 +215,7 @@
 			}
 			$data = $model->getAllData('skills',1);
 			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
-			$this->view('dashboard/dashboardSkills',$this->getAllDataOnUser('skills'));
+			$this->view('dashboard/dashboardSkills',$this->createSkiils());
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"skills"));
 		}
 		public function achievements(){
