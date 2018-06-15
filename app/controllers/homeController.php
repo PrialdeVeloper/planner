@@ -4,7 +4,7 @@
 		protected $userTable = array('userFullname','userTitle','email','password','gender','birthdate');
 		protected $userTableProfile = array('userFullname','userTitle','email','gender','birthdate','profile');
 		protected $skill = array('userID','skillName','skillRating','description');
-		protected $skillProfile = array('userID','skillName','skillRating','profile','description');
+		protected $skillProfile = array('skillName','skillRating','profile','description');
 		protected $salt = null;
 
 		public function __construct(){
@@ -18,29 +18,55 @@
 			return htmlentities(trim($variable));
 		}
 
-		public function createSkiils(){
-			$builder = 1;
+		public function createSkills(){
+			$builder = null;
+			$count = 1;
 			$skillData = $this->getAllDataOnUser('skills');
-			$star = null;
-				// $builder = '<div class="col-lg-8 mt-5 pl-5 contentSkills shadowBox">
-    //         <div class="row">
-    //             <div class="col-5">
-    //                 <img class="img-fluid images" src="../../app/userImages/skill/' .htmlentities($skill["profile"]) .'">
-    //             </div>
-    //             <div class="col-7 skillName lead">
-    //                 <div class="col">
-    //                     <span class="text-left mt-3">'. htmlentities($skill["skillName"]) .'</span>
-    //                 </div>
-    //                 <div class="col desc pb-5">
-    //                     <p class="text-left mt-3">'. htmlentities($skill["description"]) .'</p>
-    //                 </div>
-    //                 <div class="col text-center star mt-5">
-    //                     <label class="text-warning">qw</label>
-    //                 </div>
-    //             </div>
-    //     	</div>';
-			
-			
+			$return = null;
+			foreach ($skillData as $data) {
+				$track = null;
+				$star = null;
+				for ($i=0; $i < $data['skillRating'] ; $i++) { 
+					$track = '<i class="fas fa-star"></i>';
+					$star = $track."".$star;
+				}
+
+				$builder = '
+				<div class="col-lg-8 mt-5 pl-5 contentSkills shadowBox pt-5"> 
+				    <div class="row"> 
+				        <div class="col-5"> 
+				            <img class="img-fluid images" src="../../app/userImages/skill/'. htmlentities($data['profile']) .'">
+				        </div> 
+				        <div class="col-7 skillName lead"> 
+				            <div class="col"> 
+				                <span class="text-left mt-3">'. htmlentities($data['skillName']) .'</span> 
+				            </div> 
+				            <div class="col desc pb-5"> 
+				                <p class="text-left mt-3">'. htmlentities($data['description']) .'</p> 
+				            </div> 
+				            <div class="col text-center star mt-5"> 
+				                <label class="text-warning">'. $star .'</label>
+				                <input type="hidden" name="rating" value="'. $data['skillRating'] .'"> 
+				            </div> 
+				        </div>
+				    </div>
+				    <div class="container mt-5">
+	                    <div class="col-5 mx-auto"> 
+	                        <div class="row">
+	                            <div class="col">
+	                                <a href="?edit='.$data['skillID'].'" class="lead text-primary pt-3"  data-toggle="modal" data-target="#editSkills"><span><i class="fas fa-edit"></i></span> Edit</a>
+	                            </div>
+	                            <div class="col">
+	                                <a href="?delete='.$data['skillID'].'" class="lead text-danger" onclick="return confirm(&quot;Are you sure you want to delete '. htmlentities($data['skillName']) .'?&quot;);"><span><i class="fas fa-trash-alt"></i></span> Delete</a>
+	                            </div>
+	                        </div>
+	                    </div>
+                	</div>
+				</div>
+				';
+		        $return = $return."".$builder;
+			}
+			return $return;
 		}
 
 		public function arrayCount($variable,$count){
@@ -163,6 +189,12 @@
 			return $model->getAllData($table,$_SESSION['userID']);
 		}
 
+		public function getAllDataOnSkills($table,$whereClauseAnswer){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			return $model->getAllDataDynamic($table,'skillID',$whereClauseAnswer);
+		}
+
 
 
 		public function dashboard(){
@@ -197,6 +229,8 @@
 		public function skills(){
 			$controller = new Controller();
 			$model = $controller->Model('home/registerModel');
+			$dataSkillEdit = null;
+			$return = null;
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
@@ -213,10 +247,57 @@
 					$model->register('skills',$arrayNoImage,$this->skillProfile);
 				}
 			}
+
+			if(isset($_GET['delete'])){
+				$var = $_GET['delete'];
+				$dataSkillEdit = null;
+				$return = $model->CheckDataOwnership('skills','skillName',array($var,$_SESSION['userID']),'skillID','userID');
+					if(!empty($return)){
+						$model->deleteRecord('skills','skillID',array($var));
+						header("Location: skills");
+						die;
+					}
+					else{
+						echo "<script>window.location='skills';</script>";
+					}
+				unset($var);
+				unset($return);
+			}
+
+			if(isset($_GET['edit'])){
+				$var = $_GET['edit'];
+				$return = $model->CheckDataOwnership('skills','skillName',array($var,$_SESSION['userID']),'skillID','userID');
+					if(!empty($return)){
+						$dataSkillEdit = $this->getAllDataOnSkills('skills',$var);
+					}
+					else{
+						$dataSkillEdit = null;
+						echo "<script>window.location='skills';</script>";
+					}
+				unset($var);
+				unset($return);
+			}
+
+			if(isset($_POST['editSkill'])){
+				$id = $_POST['skillID'];
+				if($_FILES["imageUpload"]['size'] == 0) {
+					$image = $_POST['imageHere'];
+				}
+				else{
+				 	$image= $this->imageUpload('skill',$this->checkEscapeString("imageUpload"),$_SESSION['userID']);
+				}
+				if(empty($_POST['stars'])){
+					$_POST['stars'] = "";
+				}
+				$array = array($this->checkEscapeString($_POST['skillname']),$this->checkEscapeString($_POST['stars']),$image,$this->checkEscapeString($_POST['description']));
+				$model->updateAll("skills",$this->skillProfile,$array,"skillID",$id);
+			}
+
 			$data = $model->getAllData('skills',1);
 			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
-			$this->view('dashboard/dashboardSkills',$this->createSkiils());
+			$this->view('dashboard/dashboardSkills',array('DOM'=>$this->createSkills(),'data'=>$dataSkillEdit));
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"skills"));
+			unset($dataSkillEdit);
 		}
 		public function achievements(){
 			if(!isset($_SESSION['userID'])){

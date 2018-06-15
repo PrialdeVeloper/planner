@@ -41,7 +41,30 @@
 				$return = $stmt->fetchColumn();
 				return $return;
 			} catch (Exception $e) {
-				
+				return $e->getMessage;
+			}
+		}
+
+
+		public function deleteRecord($table,$whereClause,$data){
+			$return = null;
+			try {
+				$stmt = $this->db->prepare("DELETE FROM $table where $whereClause = ?");
+				$return = $stmt->execute($data);
+			} catch (Exception $e) {
+				return $e->getMessage();
+			}
+		}	
+
+
+		public function CheckDataOwnership($table,$field,$data,$whereClause,$whereClauseSecond){
+			try {
+				$stmt = $this->db->prepare("SELECT $field FROM $table WHERE ($whereClause = ? && $whereClauseSecond = ?)");
+				$stmt->execute($data);
+				$return = $stmt->fetchColumn();
+				return $return;
+			} catch (Exception $e) {
+				return $e->getMessage;
 			}
 		}
 
@@ -55,7 +78,17 @@
 			} catch (Exception $e) {
 				return $e->getMessage();
 			}
-			
+		}
+
+		public function getAllDataDynamic($table,$whereClause,$whereClauseAnswer){
+			try {
+				$stmt = $this->db->prepare("SELECT * FROM $table WHERE $whereClause = ?");
+				$stmt->execute(array($whereClauseAnswer));
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			} catch (Exception $e) {
+				return $e->getMessage();
+			}
 		}
 
 		public function lastID(){

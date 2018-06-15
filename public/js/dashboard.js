@@ -14,3 +14,11 @@ function readURL(input) {
 $("#imageUpload").change(function(){
     readURL(this);
 });
+
+
+$(function(){
+	url = new URL(window.location.href);
+	if (url.searchParams.get('edit')) {
+		$("#editSkills").modal("show");
+	}
+});
