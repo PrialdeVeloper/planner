@@ -5,13 +5,18 @@
                 extract($data[0]);
             }   
     }
+    // else{
+    //     if(!isset(array($skillName,$description,$profile,$skillID))){
+    //     $skillName = $description = $profile = $skillID = null;
+    //     }
+    // }
 ?>   
 
          <div class="modal fade" id="addSkills" tabindex="-1" role="dialog" aria-labelledby="addSkills" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                       <div class="modal-header bg-light">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add Skill</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -73,7 +78,7 @@
                                     <div class="input-group-prepend">
                                       <div class="input-group-text bg-green">Picture</div>
                                     </div>
-                                    <input type="file" class="form-control" id="imageUpload" name="imageUpload" accept="image/*" required>
+                                    <input type="file" class="form-control" id="imageUpload" name="imageUpload" accept="image/*">
                                   </div>
                                   <div>
                                     <img src="../../app/userImages/karate.png" id="previewImage">
@@ -163,7 +168,7 @@
                                     <input type="hidden" name="imageHere" value="<?=htmlentities($profile)?>">
                                   </div>
                                   <div>
-                                    <img src="../../app/userImages/skill/<?=htmlentities($profile);?>" id="previewImage">
+                                    <img src="../../app/userImages/skill/<?=htmlentities($profile = empty($profile)?'noPhoto.png':$profile);?>" id="previewImage">
                                   </div>
                                 </div>
                                     <input type="hidden" name="skillID" value="<?=htmlentities($skillID);?>">

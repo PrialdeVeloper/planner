@@ -18,7 +18,14 @@ $("#imageUpload").change(function(){
 
 $(function(){
 	url = new URL(window.location.href);
-	if (url.searchParams.get('edit')) {
+	if (url.searchParams.get('editSkills')) {
 		$("#editSkills").modal("show");
+	}
+});
+
+$(function(){
+	url = new URL(window.location.href);
+	if (url.searchParams.get('editAchievements')) {
+		$("#editAchievement").modal("show");
 	}
 });

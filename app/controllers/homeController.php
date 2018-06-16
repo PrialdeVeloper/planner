@@ -5,6 +5,8 @@
 		protected $userTableProfile = array('userFullname','userTitle','email','gender','birthdate','profile');
 		protected $skill = array('userID','skillName','skillRating','description');
 		protected $skillProfile = array('skillName','skillRating','profile','description');
+		protected $achievement = array('achievementName','comment','profile','date');
+		protected $achievementProfile = array('userID','achievementName','comment','profile','date');
 		protected $salt = null;
 
 		public function __construct(){
@@ -19,23 +21,35 @@
 		}
 
 		public function createSkills(){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
 			$builder = null;
-			$count = 1;
-			$skillData = $this->getAllDataOnUser('skills');
+			$skillData = $model->getAllDataOrder('skills',$_SESSION['userID'],'skillID','DESC');
 			$return = null;
+			$photo = null;
 			foreach ($skillData as $data) {
 				$track = null;
 				$star = null;
-				for ($i=0; $i < $data['skillRating'] ; $i++) { 
-					$track = '<i class="fas fa-star"></i>';
-					$star = $track."".$star;
-				}
 
+				if(!empty($data['skillRating'])){
+					for ($i=0; $i < $data['skillRating'] ; $i++) { 
+						$track = '<i class="fas fa-star text-warning"></i>';
+						$star = $track."".$star;
+					}
+					for ($j=$i; $j < 5 ; $j++) { 
+						$star = $star.'<i class="fas fa-star"></i>';
+					}
+					unset($i,$j);
+				}
+				else{
+					$star = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
+				}
+				$photo = empty($data['profile'])? 'noPhoto.png': $data['profile'];
 				$builder = '
 				<div class="col-lg-8 mt-5 pl-5 contentSkills shadowBox pt-5"> 
 				    <div class="row"> 
 				        <div class="col-5"> 
-				            <img class="img-fluid images" src="../../app/userImages/skill/'. htmlentities($data['profile']) .'">
+				            <img class="img-fluid images" src="../../app/userImages/skill/'. htmlentities($photo) .'">
 				        </div> 
 				        <div class="col-7 skillName lead"> 
 				            <div class="col"> 
@@ -45,7 +59,7 @@
 				                <p class="text-left mt-3">'. htmlentities($data['description']) .'</p> 
 				            </div> 
 				            <div class="col text-center star mt-5"> 
-				                <label class="text-warning">'. $star .'</label>
+				                <label>'. $star .'</label>
 				                <input type="hidden" name="rating" value="'. $data['skillRating'] .'"> 
 				            </div> 
 				        </div>
@@ -54,7 +68,7 @@
 	                    <div class="col-5 mx-auto"> 
 	                        <div class="row">
 	                            <div class="col">
-	                                <a href="?edit='.$data['skillID'].'" class="lead text-primary pt-3"  data-toggle="modal" data-target="#editSkills"><span><i class="fas fa-edit"></i></span> Edit</a>
+	                                <a href="?editSkills='.$data['skillID'].'" class="lead text-primary pt-3"><span><i class="fas fa-edit"></i></span> Edit</a>
 	                            </div>
 	                            <div class="col">
 	                                <a href="?delete='.$data['skillID'].'" class="lead text-danger" onclick="return confirm(&quot;Are you sure you want to delete '. htmlentities($data['skillName']) .'?&quot;);"><span><i class="fas fa-trash-alt"></i></span> Delete</a>
@@ -65,10 +79,125 @@
 				</div>
 				';
 		        $return = $return."".$builder;
+		        $photo = null;
 			}
 			return $return;
 		}
 
+		public function createAchievement(){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			$builder = null;
+			$count = 1;
+			$achData = $model->getAllDataOrder('achievement',$_SESSION['userID'],'achID','DESC');
+			$return = null;
+			$photo = null;
+
+			foreach ($achData as $data) {
+				$photo = empty($data['profile'])? 'noPhoto.png': $data['profile'];
+				$builder = '
+				<div class="col-lg-8 mt-5 pl-5 contentSkills shadowBox pt-5"> 
+				    <div class="row"> 
+				        <div class="col-5"> 
+				            <img class="img-fluid images" src="../../app/userImages/achievement/'. htmlentities($photo) .'">
+				        </div> 
+				        <div class="col-7 skillName lead"> 
+				            <div class="col"> 
+				                <span class="text-left mt-3">'. htmlentities($data['achievementName']) .'</span> 
+				            </div> 
+				            <div class="col desc pb-5"> 
+				                <p class="text-left mt-3">'. htmlentities($data['comment']) .'</p> 
+				            </div> 
+				            <div class="col text-center star mt-5"> 
+				                <label>'. htmlentities(date("F jS, Y", strtotime($data['date']))) .'</label>
+				            </div> 
+				        </div>
+				    </div>
+				    <div class="container mt-5">
+	                    <div class="col-5 mx-auto"> 
+	                        <div class="row">
+	                            <div class="col">
+	                                <a href="?editAchievements='.$data['achID'].'" class="lead text-primary pt-3"><span><i class="fas fa-edit"></i></span> Edit</a>
+	                            </div>
+	                            <div class="col">
+	                                <a href="?delete='.$data['achID'].'" class="lead text-danger" onclick="return confirm(&quot;Are you sure you want to delete '. htmlentities($data['achievementName']) .'?&quot;);"><span><i class="fas fa-trash-alt"></i></span> Delete</a>
+	                            </div>
+	                        </div>
+	                    </div>
+                	</div>
+				</div>
+				';
+		        $return = $return."".$builder;
+		        $photo = null;
+		    }
+		        return $return;
+		}
+
+		public function createNewsFeed(){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			$builder = null;
+			$count = 1;
+			$newsFeed = $model->joinTable('skills','achievement',array($_SESSION['userID'],$_SESSION['userID']));
+			$return = null;
+			$photo = null;
+			$rating = null;
+			$dir = null;
+
+			foreach ($newsFeed as $data) {
+				$track = null;
+				$star = null;
+				if(is_numeric($data['skillRating'])){
+					if(!empty($data['skillRating'])){
+						for ($i=0; $i < $data['skillRating'] ; $i++) { 
+							$track = '<i class="fas fa-star text-warning"></i>';
+							$star = $track."".$star;
+						}
+						for ($j=$i; $j < 5 ; $j++) { 
+							$star = $star.'<i class="fas fa-star"></i>';
+						}
+						unset($i,$j);
+					}
+					else{
+						$star = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
+					}
+					$dir = 'skill';
+				}
+				elseif(!is_numeric($data['skillRating'])){
+					$star = htmlentities(date("F jS, Y", strtotime($data['skillRating'])));
+					$dir = 'achievement';
+
+				}
+
+				$photo = empty($data['profile'])? 'noPhoto.png': $data['profile'];
+				$builder = '
+				<div class="col-lg-8 mt-5 pl-5 contentSkills shadowBox pt-5">
+					<div class="col text-left titleNewsFeed">'. htmlentities(ucfirst($dir)) .'</div> 
+				    <div class="row"> 
+				        <div class="col-5"> 
+				            <img class="img-fluid images" src="../../app/userImages/'.$dir ."/". htmlentities($photo) .'">
+				        </div> 
+				        <div class="col-7 skillName lead"> 
+				            <div class="col"> 
+				                <span class="text-left mt-3">'. htmlentities($data['skillName']) .'</span> 
+				            </div> 
+				            <div class="col desc pb-5"> 
+				                <p class="text-left mt-3">'. htmlentities($data['description']) .'</p> 
+				            </div> 
+				            <div class="col text-center star mt-5"> 
+				                <label>'. $star .'</label>
+				            </div> 
+				        </div>
+				    </div>
+				</div>
+				';
+		        $return = $return."".$builder;
+		        $photo = null;
+		    }
+		        return $return;
+		}
+			
+	
 		public function arrayCount($variable,$count){
 			$arrayVar = null;
 			$flag = true;
@@ -195,23 +324,29 @@
 			return $model->getAllDataDynamic($table,'skillID',$whereClauseAnswer);
 		}
 
-
+		public function getAllDataOnAchievement($table,$whereClauseAnswer){
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			return $model->getAllDataDynamic($table,'achID',$whereClauseAnswer);
+		}
 
 		public function dashboard(){
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
 			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
-			$this->view('dashboard/dashboardNewsfeed');
+			$this->view('dashboard/dashboardNewsfeed',['DOM'=>$this->createNewsFeed()]);
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"newsFeed"));
 		}
 		public function me(){
-			$controller = new Controller();
-			$model = $controller->Model('home/registerModel');
-			$array = null;
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			$array = null;
 			if(isset($_POST['saveChanges'])){
 				if($_FILES["imageUpload"]['size'] == 0) {
 					$image = $_POST['imageHere'];
@@ -227,13 +362,13 @@
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"aboutMe"));
 		}
 		public function skills(){
+			if(!isset($_SESSION['userID'])){
+				header("location: login");
+			}
 			$controller = new Controller();
 			$model = $controller->Model('home/registerModel');
 			$dataSkillEdit = null;
 			$return = null;
-			if(!isset($_SESSION['userID'])){
-				header("location: login");
-			}
 
 			if(isset($_POST["addSkill"])){
 				if($_FILES["imageUpload"]['size'] > 0) {
@@ -243,8 +378,8 @@
 					$model->updateOneField('skills','profile','skillID',$image,$returnModel);
 				}
 				elseif($_FILES["imageUpload"]['size'] == 0) {
-					$arrayNoImage = array($_SESSION['userID'],$this->checkEscapeString(ucwords($_POST['skillname'])),$this->checkEscapeString($_POST['star']),"",$this->checkEscapeString($_POST['description']));
-					$model->register('skills',$arrayNoImage,$this->skillProfile);
+					$arrayNoImage = array($_SESSION['userID'],$this->checkEscapeString(ucwords($_POST['skillname'])),$this->checkEscapeString($_POST['star']),$this->checkEscapeString($_POST['description']));
+					$model->register('skills',$arrayNoImage,$this->skill);
 				}
 			}
 
@@ -264,8 +399,8 @@
 				unset($return);
 			}
 
-			if(isset($_GET['edit'])){
-				$var = $_GET['edit'];
+			if(isset($_GET['editSkills'])){
+				$var = $_GET['editSkills'];
 				$return = $model->CheckDataOwnership('skills','skillName',array($var,$_SESSION['userID']),'skillID','userID');
 					if(!empty($return)){
 						$dataSkillEdit = $this->getAllDataOnSkills('skills',$var);
@@ -291,6 +426,7 @@
 				}
 				$array = array($this->checkEscapeString($_POST['skillname']),$this->checkEscapeString($_POST['stars']),$image,$this->checkEscapeString($_POST['description']));
 				$model->updateAll("skills",$this->skillProfile,$array,"skillID",$id);
+				header("location: skills");
 			}
 
 			$data = $model->getAllData('skills',1);
@@ -299,12 +435,76 @@
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"skills"));
 			unset($dataSkillEdit);
 		}
+
+
 		public function achievements(){
 			if(!isset($_SESSION['userID'])){
 				header("location: login");
 			}
+			$controller = new Controller();
+			$model = $controller->Model('home/registerModel');
+			$dataSkillEdit = null;
+			$return = null;
+
+			if(isset($_POST["addAchievement"])){
+				if($_FILES["imageUpload"]['size'] > 0) {
+					$image= $this->imageUpload('achievement',$this->checkEscapeString("imageUpload"),$_SESSION['userID']);
+					$array = array($_SESSION['userID'],$this->checkEscapeString(ucwords($_POST['achievementName'])),$this->checkEscapeString($_POST['comment']),$image,$this->checkEscapeString($_POST['dateUpload']));
+					$returnModel = $model->register('achievement',$array,$this->achievementProfile);
+					$model->updateOneField('achievement','profile','achID',$image,$returnModel);
+				}
+				elseif($_FILES["imageUpload"]['size'] == 0) {
+					$arrayNoImage = array($_SESSION['userID'],$this->checkEscapeString(ucwords($_POST['achievementName'])),$this->checkEscapeString($_POST['comment']),"",$this->checkEscapeString($_POST['dateUpload']));
+					$model->register('achievement',$arrayNoImage,$this->achievementProfile);
+
+				}
+			}
+
+			if(isset($_GET['delete'])){
+				$var = $_GET['delete'];
+				$return = $model->CheckDataOwnership('achievement','achievementName',array($var,$_SESSION['userID']),'achID','userID');
+					if(!empty($return)){
+						$model->deleteRecord('achievement','achID',array($var));
+						header("Location: achievements");
+						die;
+					}
+					else{
+						$dataSkillEdit = null;
+						echo "<script>window.location='achievements';</script>";
+					}
+				unset($var);
+				unset($return);
+			}
+
+			if(isset($_GET['editAchievements'])){
+				$var = $_GET['editAchievements'];
+				$return = $model->CheckDataOwnership('achievement','achievementName',array($var,$_SESSION['userID']),'achID','userID');
+					if(!empty($return)){
+						$dataSkillEdit = $this->getAllDataOnAchievement('achievement',$var);
+					}
+					else{
+						$dataSkillEdit = null;
+						echo "<script>window.location='achievements';</script>";
+					}
+				unset($var);
+				unset($return);
+			}
+
+			if(isset($_POST['editAchievement'])){
+				$id = $_POST['achievementID'];
+				if($_FILES["imageUpload"]['size'] == 0) {
+					$image = $_POST['imageHere'];
+				}
+				else{
+				 	$image= $this->imageUpload('achievement',$this->checkEscapeString("imageUpload"),$_SESSION['userID']);
+				}
+				$array = array($this->checkEscapeString($_POST['achievementName']),$this->checkEscapeString($_POST['comment']),$image,$this->checkEscapeString($_POST['dateUpload']));
+				$model->updateAll("achievement",$this->achievement,$array,"achID",$id);
+				header("location: achievements");
+			}
+
 			$this->view('dashboard/dashboardHeader',$this->getAllDataOnUser('user'));
-			$this->view('dashboard/dashboardAchievement');
+			$this->view('dashboard/dashboardAchievement',array('DOM'=>$this->createAchievement(),'data'=>$dataSkillEdit));
 			$this->view('dashboard/dashboardFooter',array("activeBar"=>"achievements"));
 		}
 		public function signOut(){

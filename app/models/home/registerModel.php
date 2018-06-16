@@ -21,6 +21,20 @@
 			}
 		}
 
+		public function joinTable($table,$otherTable,$data){
+			try {
+				$result = null;
+				foreach($data as $datas)$this->qmark[] = '?';
+				$fieldsClean = implode(",", $this->qmark);
+				$stmt = $this->db->prepare("SELECT * FROM $table WHERE userID = ? UNION SELECT * FROM $otherTable WHERE userID = ? ORDER BY skillID DESC");
+				$stmt->execute($data);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			} catch (Exception $e) {
+				return $e->getMessage();
+			}
+		}
+
 		public function register($table,$data,$fields){
 			foreach($data as $datas)$this->qmark[]='?';
 			$dataClean = implode(',',$this->qmark);
@@ -72,6 +86,17 @@
 		public function getAllData($table,$whereClause){
 			try {
 				$stmt = $this->db->prepare("SELECT * FROM $table WHERE userID = ?");
+				$stmt->execute(array($whereClause));
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				return $result;
+			} catch (Exception $e) {
+				return $e->getMessage();
+			}
+		}
+
+		public function getAllDataOrder($table,$whereClause,$orderBy,$orderMethod){
+			try {
+				$stmt = $this->db->prepare("SELECT * FROM $table WHERE userID = ? ORDER BY $orderBy $orderMethod");
 				$stmt->execute(array($whereClause));
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				return $result;

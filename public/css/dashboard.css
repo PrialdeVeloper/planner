@@ -243,6 +243,11 @@ div.stars {
 
 input.stars { display: none; }
 
+.titleNewsFeed{
+	font-size: 25px;
+	margin-bottom: 30px;
+}
+
 label.stars {
   float: right;
   padding: 10px;

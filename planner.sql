@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2018 at 10:37 AM
+-- Generation Time: Jun 16, 2018 at 10:31 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -25,6 +25,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `achievement`
+--
+
+CREATE TABLE `achievement` (
+  `achID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `achievementName` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `profile` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `skills`
 --
 
@@ -32,9 +47,9 @@ CREATE TABLE `skills` (
   `skillID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   `skillName` varchar(255) NOT NULL,
-  `skillRating` int(11) NOT NULL,
-  `profile` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL
+  `skillRating` int(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `profile` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -55,22 +70,21 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`userID`, `userFullname`, `userTitle`, `email`, `password`, `gender`, `birthdate`, `profile`) VALUES
-(1, 'Marvee Franco', 'Doctors', 'prialde01@gmail.com', '$2y$09$t2A8w1Bt9qMRJkmiS2qc5.zmHZc7yva2auXBmrXbwqnHqSXq5HL1q', 'male', '2018-06-08', '1528983856152898385641.jpg');
-
---
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `achievement`
+--
+ALTER TABLE `achievement`
+  ADD PRIMARY KEY (`achID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Indexes for table `skills`
 --
 ALTER TABLE `skills`
-  ADD PRIMARY KEY (`skillID`),
-  ADD KEY `userID` (`userID`);
+  ADD PRIMARY KEY (`skillID`);
 
 --
 -- Indexes for table `user`
@@ -83,6 +97,12 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `achievement`
+--
+ALTER TABLE `achievement`
+  MODIFY `achID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `skills`
 --
 ALTER TABLE `skills`
@@ -92,17 +112,17 @@ ALTER TABLE `skills`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `skills`
+-- Constraints for table `achievement`
 --
-ALTER TABLE `skills`
-  ADD CONSTRAINT `skills_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `achievement`
+  ADD CONSTRAINT `achievement_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
